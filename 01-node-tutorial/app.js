@@ -15,3 +15,5 @@ const sayHi = require("./5-utils");
 // const alternative = require("./6-alternative-flavor")
 // console.log(alternative);
 
+
+require("./7-mind-grenade");
