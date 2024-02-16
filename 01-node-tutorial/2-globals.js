@@ -8,6 +8,6 @@
 // console.log(require)
 // console.log(process);
 
-// setInterval( () => {
-//     console.log("hello world from nodeJS");
-// }, 1000)
+setInterval( () => {
+    console.log("hello world from nodeJS");
+}, 1000)
