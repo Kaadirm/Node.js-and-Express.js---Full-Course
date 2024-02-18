@@ -11,4 +11,3 @@ readFile('./content/first.txt', 'utf8', (err, result) => {
   console.log('completed first task')
 })
 console.log('starting next task')
-
