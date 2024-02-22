@@ -1,6 +1,8 @@
-console.log("Express Tutorial");
-
 const http = require("http");
+const {readFileSync} = require("fs");
+
+// get all files
+const homePage = readFileSync("./index.html");
 
 const server = http.createServer((req, res) => {
   // console.log("user hit the server");
@@ -12,7 +14,7 @@ const server = http.createServer((req, res) => {
   if (req.url === "/") {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(
-      `<html><body style='background-color: gray; text-align: center; display: flex; justify-content: center; align-items: center;'><h1 style='color: blue; font-size: 5rem'>Hi, this is the HOME PAGE!</h1></body></html>`
+      homePage
     );
   } else if (req.url === "/about") {
     res.writeHead(200, { "Content-Type": "text/plain" });
