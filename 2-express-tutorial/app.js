@@ -6,6 +6,8 @@ const server = http.createServer((req, res) => {
   // console.log("user hit the server");
   // res.end(`Hi this is the port 5000`)
 
+  // console.log(req.method)
+  console.log(req.url)
   // Checking request url and sending html file
   if (req.url === "/") {
     res.writeHead(200, { "Content-Type": "text/html" });
