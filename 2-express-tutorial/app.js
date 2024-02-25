@@ -32,6 +32,12 @@ app.get("/api/products/:productId", (req, res) => {
   return res.json(singleProduct)
 })
 
+// detailed and nested routes
+app.get("/api/products/:productId/reviews/:reviewId", (req, res) => {
+  console.log(req.params)
+  res.send(`<h1>Welcome Reviews</h1>`)
+})
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 })
