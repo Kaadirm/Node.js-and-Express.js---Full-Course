@@ -19,6 +19,19 @@ app.get("/api/products", (req, res) => {
   res.json(newProducts)
 })
 
+// specific product routes
+app.get("/api/products/:productId", (req, res) => {
+  const requestId = parseInt(req.params.productId)
+
+  const singleProduct = products.find(product => product.id === requestId) 
+  
+  if(!singleProduct){
+    return res.status(404).send(`<h1>Product not found</h1>`)
+  }
+  
+  return res.json(singleProduct)
+})
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 })
