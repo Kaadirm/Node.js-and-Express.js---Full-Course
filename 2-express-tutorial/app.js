@@ -3,23 +3,26 @@ console.clear();
 const express = require("express");
 const app = express();
 const port = 5000;
-
+const logger = require("./logger")
 // req => middleware => res
+app.use("/api", logger)
 
-const logger = (req, res, next) => {
-  const method = req.method;
-  const url = req.url;
-  const time = new Date().getFullYear();
-  console.log(method, url, time);
-  next();
-};
 
-app.get("/", logger, (req, res) => {
+app.get("/", (req, res) => {
   res.send("Home");
 });
 
-app.get("/about", logger, (req, res) => {
+app.get("/about", (req, res) => {
   res.send("About");
+});
+app.get("/api", (req, res) => {
+  res.send("API");
+});
+app.get("/api/products", (req, res) => {
+  res.send("API Products");
+});
+app.get("/api/items", (req, res) => {
+  res.send("API Items");
 });
 
 app.listen(port, () => {
