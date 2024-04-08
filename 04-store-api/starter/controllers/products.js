@@ -8,12 +8,12 @@ const getAllProductsStatic = async (req, res) => {
   // });
   // const products = await Product.find({ name: "vase table" });
 
-  const products = await Product.find({ name: "vase table" });
+  const products = await Product.find({}).sort("-name -price");
   res.status(200).json({ products, nbHits: products.length });
 };
 
 const getAllProducts = async (req, res) => {
-  const { name, price, featured, rating, company } = req.query;
+  const { name, price, featured, rating, company, sort } = req.query;
   const queryObject = {};
 
   if (name) {
@@ -36,7 +36,14 @@ const getAllProducts = async (req, res) => {
     queryObject.company = company;
   }
 
-  const products = await Product.find(queryObject);
+  let products;
+  if (sort) {
+    const sortOptions = sort.split(",").join(" ");
+    products = await Product.find(queryObject).sort(sortOptions);
+  } else {
+    products = await Product.find(queryObject);
+  }
+
   res.status(200).json({ nbHits: products.length, products });
 };
 
