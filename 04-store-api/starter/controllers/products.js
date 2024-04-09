@@ -8,12 +8,21 @@ const getAllProductsStatic = async (req, res) => {
   // });
   // const products = await Product.find({ name: "vase table" });
 
-  const products = await Product.find({}).limit(2).skip(0);
+  const products = await Product.find({ price: { $gt: 25 } }).sort("price");
   res.status(200).json({ nbHits: products.length, products });
 };
 
 const getAllProducts = async (req, res) => {
-  const { name, price, featured, rating, company, sort, fields } = req.query;
+  const {
+    name,
+    price,
+    featured,
+    rating,
+    company,
+    sort,
+    fields,
+    numericFilters,
+  } = req.query;
   const queryObject = {};
 
   if (name) {
@@ -34,6 +43,30 @@ const getAllProducts = async (req, res) => {
 
   if (company) {
     queryObject.company = company;
+  }
+
+  if (numericFilters) {
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "=": "$eq",
+      "<": "$lt",
+      "<=": "$lte",
+    };
+
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+    let filters = numericFilters.replace(
+      regEx,
+      (match) => `-${operatorMap[match]}-`
+    );  
+    
+    const options = ["price", "rating"]; // Numeric fields
+    filters = filters.split(",").forEach((item) => {
+      const [field, operator, value] = item.split("-");
+      if (options.includes(field)) {
+        queryObject[field] = { [operator]: Number(value) };
+      }
+    });
   }
 
   let result = Product.find(queryObject);
@@ -57,7 +90,6 @@ const getAllProducts = async (req, res) => {
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
-
 
   const products = await result;
   res.status(200).json({ nbHits: products.length, products });
