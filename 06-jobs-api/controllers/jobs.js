@@ -37,7 +37,7 @@ const updateJob = async (req, res) => {
     throw new BadRequestError("Company and Position are required");
   }
 
-  const job = await Job.findOneAndUpdate(
+  const job = await Job.findByIdAndUpdate(
     { _id: jobId, createdBy: userId },
     req.body,
     { new: true, runValidators: true }
@@ -47,16 +47,22 @@ const updateJob = async (req, res) => {
     throw new NotFoundError(`No job with id : ${jobId}`);
   }
 
-  try {
-    res.status(StatusCodes.OK).json({ job });
-  } catch (error) {
-    // Handle the error here
-    console.log(error);
-  }
+  res.status(StatusCodes.OK).json({ job });
 };
 
 const deleteJob = async (req, res) => {
-  res.send("delete job");
+  const {
+    user: { userId },
+    params: { id: jobId },
+  } = req;
+
+  const job = await Job.findByIdAndDelete({ _id: jobId, createdBy: userId });
+
+  if (!job) {
+    throw new NotFoundError(`No job with id : ${jobId}`);
+  }
+
+  res.status(StatusCodes.OK).json({ message: "Job deleted successfully" });
 };
 
 module.exports = {
