@@ -1,7 +1,26 @@
 require("dotenv").config();
 require("express-async-errors");
+
+// extra security packages imports
+const helmet = require("helmet");
+const cors = require("cors");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+
 const express = require("express");
 const app = express();
+
+// extra security packages usage
+// app.set("trust proxy", 1); if it is behinde a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+  })
+);
+app.use(helmet());
+app.use(cors());
+app.use(xss());
 
 // connectDB
 const connectDB = require("./db/connect");
