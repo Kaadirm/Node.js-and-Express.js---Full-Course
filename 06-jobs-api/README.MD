@@ -67,3 +67,7 @@ Swagger UI
       required: true
       description: the job id
 ```
+
+Project completed successfully
+
+(except deployment, frontend, swagger)
