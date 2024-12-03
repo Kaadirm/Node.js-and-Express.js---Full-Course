@@ -31,7 +31,13 @@ const login = async (req, res) => {
     });
 };
 
+const updateUser = async (req, res) => {
+    console.log(req.user);
+    console.log(req.body);
+};
+
 module.exports = {
     register,
-    login
+    login,
+    updateUser
 };
