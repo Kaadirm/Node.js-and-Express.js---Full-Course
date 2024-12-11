@@ -5,14 +5,18 @@ const { BadRequestError, NotFoundError } = require('../errors');
 const getAllJobs = async (req, res) => {
     const { search, status, jobType, sort } = req.query;
 
-    // protected route
     const queryObject = {
         createdBy: req.user.userId
     };
 
-    const jobs = await Job.find({ createdBy: req.user.userId }).sort('createdAt');
+    if (search) {
+        queryObject.position = { $regex: search, $options: 'i' };
+    }
 
-    res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
+    let result = Job.find(queryObject);
+
+    const jobs = await result;
+    res.status(StatusCodes.OK).json({ jobs });
 };
 
 const getJob = async (req, res) => {
