@@ -127,9 +127,13 @@ const showStats = async (req, res) => {
             }
         }
     ]);
-    console.log(stats);
+    stats = stats.reduce((acc, curr) => {
+        const { _id: title, count } = curr;
+        acc[title] = count;
+        return acc;
+    }, {});
 
-    res.status(StatusCodes.OK).json({ defaultStats: {}, monthlyApplications: [] });
+    res.status(StatusCodes.OK).json({ defaultStats: stats, monthlyApplications: [] });
 };
 
 module.exports = {
