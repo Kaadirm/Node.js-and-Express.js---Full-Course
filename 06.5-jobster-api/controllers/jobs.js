@@ -133,7 +133,13 @@ const showStats = async (req, res) => {
         return acc;
     }, {});
 
-    res.status(StatusCodes.OK).json({ defaultStats: stats, monthlyApplications: [] });
+    const defaultStats = {
+        pending: stats.pending || 0,
+        interview: stats.interview || 0,
+        declined: stats.declined || 0
+    };
+
+    res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications: [] });
 };
 
 module.exports = {
