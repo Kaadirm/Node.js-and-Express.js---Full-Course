@@ -10,6 +10,10 @@ const uploadProductImage = async (req, res) => {
 
     const productImage = req.files.image;
 
+    if(!productImage.mimetype.startsWith('image')) {
+        throw new CustomError.BadRequestError('Please Upload Image');
+    }
+
     const imagePath = path.join(__dirname, `../public/uploads/${productImage.name}`);
 
     await productImage.mv(imagePath);
