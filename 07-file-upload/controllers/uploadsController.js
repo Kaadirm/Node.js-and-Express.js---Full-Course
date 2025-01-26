@@ -14,6 +14,10 @@ const uploadProductImage = async (req, res) => {
         throw new CustomError.BadRequestError('Please Upload Image');
     }
 
+    if(productImage.size > process.env.MAX_FILE_UPLOAD) {
+        throw new CustomError.BadRequestError(`Please upload an image smaller than ${process.env.MAX_FILE_UPLOAD}`);
+    }
+
     const imagePath = path.join(__dirname, `../public/uploads/${productImage.name}`);
 
     await productImage.mv(imagePath);
