@@ -1,6 +1,7 @@
 const path = require('path');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
+const cloudinary = require('cloudinary').v2;
 
 const uploadProductImageLocal = async (req, res) => {
 
