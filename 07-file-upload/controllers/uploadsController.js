@@ -5,17 +5,17 @@ const cloudinary = require('cloudinary').v2;
 
 const uploadProductImageLocal = async (req, res) => {
 
-    if(!req.files) {
+    if (!req.files) {
         throw new CustomError.BadRequestError('No File Uploaded');
     }
 
     const productImage = req.files.image;
 
-    if(!productImage.mimetype.startsWith('image')) {
+    if (!productImage.mimetype.startsWith('image')) {
         throw new CustomError.BadRequestError('Please Upload Image');
     }
 
-    if(productImage.size > process.env.MAX_FILE_UPLOAD) {
+    if (productImage.size > process.env.MAX_FILE_UPLOAD) {
         throw new CustomError.BadRequestError(`Please upload an image smaller than ${process.env.MAX_FILE_UPLOAD}`);
     }
 
@@ -26,10 +26,11 @@ const uploadProductImageLocal = async (req, res) => {
 };
 
 const uploadProductImage = async (req, res) => {
- const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
-    use_filename: true,
- });
-  
+    const result = await cloudinary.uploader.upload(req.files.image.tempFilePath,
+        {
+            use_filename: true, folder: "file-upload"
+        }
+    );
 }
 
 module.exports = {
