@@ -31,8 +31,10 @@ const uploadProductImage = async (req, res) => {
             use_filename: true, folder: "file-upload"
         }
     );
+    return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 }
 
 module.exports = {
-    uploadProductImageLocal
+    // uploadProductImageLocal,
+    uploadProductImage
 };
