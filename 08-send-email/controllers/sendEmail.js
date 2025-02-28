@@ -12,6 +12,14 @@ const sendEmail = async (req, res) => {
         }
     });
     
+    let info = await transporter.sendMail({
+        from: '"Kadir" <test@test.com>',
+        to: 'test@test.com',
+        subject: 'Hello',
+        html: '<h2>Sending Emails with Node.js</h2>'
+    });
+
+    res.json(info);
 }
 
 module.exports = sendEmail
