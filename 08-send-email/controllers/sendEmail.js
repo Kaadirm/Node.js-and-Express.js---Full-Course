@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail')
 
-const sendEmail = async (req, res) => {
+
+const sendEmailEthereal = async (req, res) => {
     let testAccount = await nodemailer.createTestAccount();
     
     const transporter = nodemailer.createTransport({
@@ -22,4 +24,20 @@ const sendEmail = async (req, res) => {
     res.json(info);
 }
 
-module.exports = sendEmail
+const sendEmailSendGrid = async (req, res) => {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+        to: 'aptul_kadir1995@hotmail.com',
+        from: 'abdlkdrmmsglu@gmail.com',
+        subject: 'Hello',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<h2>Sending Emails with Node.js</h2>'
+    }
+    const info = await sgMail.send(msg)
+    res.json(info)
+}
+
+module.exports = {
+    sendEmailEthereal,
+    sendEmailSendGrid
+}
