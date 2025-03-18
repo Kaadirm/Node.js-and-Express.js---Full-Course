@@ -39,8 +39,12 @@ const verifyEmail = async (req, res) => {
     throw new CustomError.UnauthenticatedError('Verification failed');
   }
 
+  user.isVerified = true;
+  user.verified = Date.now();
+  user.verificationToken = "";
+  await user.save();
 
-  res.status(StatusCodes.OK).json({ verificationToken, email });
+  res.status(StatusCodes.OK).json({ msg: 'Email verified!' });
 }
 
 const login = async (req, res) => {
