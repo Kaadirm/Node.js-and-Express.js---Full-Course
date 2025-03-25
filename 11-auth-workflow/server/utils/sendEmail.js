@@ -1,16 +1,10 @@
 const nodemailer = require('nodemailer');
+const nodemailerConfig = require('./nodemailerConfig');
 
 const sendEmail = async (req, res) => {
     let testAccount = await nodemailer.createTestAccount();
     
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        auth: {
-            user: 'cathy.bashirian92@ethereal.email',
-            pass: '7HVVZJDe7ThYdxpvzu'
-        }
-    });
+    const transporter = nodemailer.createTransport(nodemailerConfig);
 
     let info = await transporter.sendMail({
         from: '"Kadir" <test@test.com>',
