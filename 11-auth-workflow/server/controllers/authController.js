@@ -142,4 +142,6 @@ module.exports = {
   verifyEmail,
   login,
   logout,
+  forgotPassword,
+  resetPassword
 };
