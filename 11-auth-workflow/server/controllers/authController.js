@@ -130,7 +130,12 @@ const logout = async (req, res) => {
 };
 
 const forgotPassword = async (req, res) => {
-  res.send('forgot password');
+  const {email} = req.body;
+  if(!email) {
+    throw new CustomError.BadRequestError('Please provide email');
+  }
+  
+  res.status(StatusCodes.OK).json({msg: 'Please check your email for reset password link'});
 }
 
 const resetPassword = async (req, res) => {
