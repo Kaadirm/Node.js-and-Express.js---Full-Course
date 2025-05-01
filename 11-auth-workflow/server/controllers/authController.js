@@ -135,6 +135,19 @@ const forgotPassword = async (req, res) => {
     throw new CustomError.BadRequestError('Please provide email');
   }
   
+  const user = await User.findOne({email});
+  if(user) {
+    const passwordToken = crypto.randomBytes(70).toString('hex');
+    // send email
+
+    const tenMinutes = 1000 * 60 * 10;
+    const passwordTokenExpirationDate = Date.now() + tenMinutes;
+
+    user.passwordToken = passwordToken;
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+    await user.save();
+  }
+
   res.status(StatusCodes.OK).json({msg: 'Please check your email for reset password link'});
 }
 
