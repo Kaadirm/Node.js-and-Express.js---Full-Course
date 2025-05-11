@@ -2,7 +2,7 @@ const User = require('../models/User');
 const Token = require('../models/Token');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, sendResetPasswordEmail } = require('../utils');
+const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, sendResetPasswordEmail, hashString } = require('../utils');
 const crypto = require('crypto');
 
 const register = async (req, res) => {
@@ -151,7 +151,7 @@ const forgotPassword = async (req, res) => {
     const tenMinutes = 1000 * 60 * 10;
     const passwordTokenExpirationDate = Date.now() + tenMinutes;
 
-    user.passwordToken = passwordToken;
+    user.passwordToken = hashString(passwordToken);
     user.passwordTokenExpirationDate = passwordTokenExpirationDate;
     await user.save();
   }
@@ -167,7 +167,7 @@ const resetPassword = async (req, res) => {
   const user = await User.findOne({email});
   if(user){
     const currentDate = new Date();
-    if(user.passwordToken === token && user.passwordTokenExpirationDate > currentDate) {
+    if(user.passwordToken === hashString(token) && user.passwordTokenExpirationDate > currentDate) {
       user.password = newPassword;
       user.passwordToken = null;
       user.passwordTokenExpirationDate = null;
