@@ -15,7 +15,6 @@ const stripeController = async (req, res) => {
     currency: 'usd',
   });
 
-  console.log(paymentIntent);
   res.json({ clientSecret: paymentIntent.client_secret });
 };
 
